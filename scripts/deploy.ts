@@ -1,20 +1,40 @@
 import { ethers } from "hardhat";
 
 async function main() {
-  const currentTimestampInSeconds = Math.round(Date.now() / 1000);
-  const ONE_YEAR_IN_SECS = 365 * 24 * 60 * 60;
-  const unlockTime = currentTimestampInSeconds + ONE_YEAR_IN_SECS;
 
-  const lockedAmount = ethers.utils.parseEther("1");
+  //DEPLOYING THE UBER TOKEN CONTRACT
+  const UberTokencontract = await ethers.getContractFactory("UberToken");
+  const ubertoken = await UberTokencontract.deploy();
 
-  const Lock = await ethers.getContractFactory("Lock");
-  const lock = await Lock.deploy(unlockTime, { value: lockedAmount });
+  await ubertoken.deployed();
 
-  await lock.deployed();
+  console.log(`Uber token contract is deployed to ${ubertoken.address}`);
 
-  console.log(`Lock with 1 ETH and unlock timestamp ${unlockTime} deployed to ${lock.address}`);
+  //DEPLOYING THE UBER CONTRACT
+  const Ubercontract = await ethers.getContractFactory("Uber");
+  const uber = await Ubercontract.deploy(ubertoken.address);
+
+  await uber.deployed();
+
+  console.log(`Uber contract is deployed to ${uber.address}`);
+
+      
+    // // //Interaction with the contracts
+    // const UberInteract = await ethers.getContractAt("Uber", uber.address);
+    // const UberTokenInteract = await ethers.getContractAt("UberToken", ubertoken.address);
+
+    // const amt = await ethers.utils.parseUnits("100")
+
+    // const transferToken = await UberTokenInteract.transferFromContract("", amt);
+  
+    //  console.log("Transfer Uber token to user:", transferToken );
+
+    //  //Getting balance of tokens of users
+    //   const bal = await UberTokenInteract.balanceOf(valid1.address)
+
+    //   console.log("Balance of User", bal);
+   
 }
-
 // We recommend this pattern to be able to use async/await everywhere
 // and properly handle errors.
 main().catch((error) => {
