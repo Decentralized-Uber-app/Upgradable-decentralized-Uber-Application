@@ -1,6 +1,9 @@
 import { ethers } from "hardhat";
 
 async function main() {
+     const accounts = await ethers.getSigners()
+      const contractOwner = accounts[0]
+      const driver1 = accounts[1]
 
   //DEPLOYING THE UBER TOKEN CONTRACT
   const UberTokencontract = await ethers.getContractFactory("UberToken");
@@ -12,11 +15,49 @@ async function main() {
 
   //DEPLOYING THE UBER CONTRACT
   const Ubercontract = await ethers.getContractFactory("Uber");
-  const uber = await Ubercontract.deploy(ubertoken.address);
+  const uber = await Ubercontract.deploy();
 
   await uber.deployed();
 
   console.log(`Uber contract is deployed to ${uber.address}`);
+
+
+  /************************* */
+  const UberInteract = Ubercontract.attach(uber.address)
+  const intialixe = await UberInteract.callStatic.encode(ubertoken.address)
+  console.log("initialize ", intialixe)
+  
+
+
+   //DEPLOYING THE PROXY CONTRACT
+   const ProxyContract = await ethers.getContractFactory("Proxy");
+   const proxy = await ProxyContract.deploy(intialixe, uber.address);
+ 
+   await proxy.deployed();
+ 
+   console.log(`Uber contract is deployed to ${proxy.address}`)
+
+
+/******************INteract wiith*/
+const uberProxyInteract =  Ubercontract.attach(proxy.address)
+const driverReg = await uberProxyInteract.connect(driver1).driversRegister("isaac",  5);
+
+
+const driversaddr = await uberProxyInteract.callStatic.viewAllDrivers();
+console.log("drivers", driversaddr)
+
+/*******************set ride fee */ //onlyadmin can do this
+ await uberProxyInteract.setRideFeePerTime(20);
+
+ /***************get fee*****/
+ const getFee = await uberProxyInteract.callStatic.driveFeePerTime()
+ console.log("get fee", getFee)
+
+ /**********Get admin********** */
+ const getAdmin = await uberProxyInteract.callStatic.admin()
+ console.log("admin ", getAdmin)
+
+
 
       
     // // //Interaction with the contracts

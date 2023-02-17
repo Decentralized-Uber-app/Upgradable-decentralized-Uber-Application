@@ -17,7 +17,7 @@ contract Uber is Initializable, AccessControlUpgradeable, Proxiable {
     bytes32 public constant REVIEWER_ROLE = keccak256("REVIEWER_ROLE");
 
     // STATE VARIABLES //
-    address admin;
+    address public admin;
     address[] driversAddress;
     address[] driverReviewers;
     address[] passengersAddress;
@@ -29,26 +29,28 @@ contract Uber is Initializable, AccessControlUpgradeable, Proxiable {
     uint public rideCount;
 
 
-    function constructor1(address _tokenAddress) public {
+    // function constructor1(address _tokenAddress) public {
+    //     require(admin == address(0), "Already initalized");
+    //     admin = msg.sender;
+    //      tokenAddress = _tokenAddress;
+    // }
+
+     function initialize(address _tokenAddress) public initializer {
         require(admin == address(0), "Already initalized");
         admin = msg.sender;
-         tokenAddress = _tokenAddress;
-    }
-
-     function initialize() public initializer {
-        require(msg.sender == admin, "not admin");
+        tokenAddress = _tokenAddress;
 
         __AccessControl_init();
         _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
         _grantRole(REVIEWER_ROLE, msg.sender);
     }
 
-     function updateCode(address newCode) onlyOwner public {
+     function updateCode(address newCode) onlyRole(DEFAULT_ADMIN_ROLE) public {
         updateCodeAddress(newCode);
     }
 
     function encode(address _tokenAddress) external pure returns (bytes memory) {
-        return abi.encodeWithSignature("constructor1(address)", _tokenAddress);
+        return abi.encodeWithSignature("initialize(address)", _tokenAddress);
     }
 
         struct DriverDetails{
@@ -195,8 +197,4 @@ contract Uber is Initializable, AccessControlUpgradeable, Proxiable {
         tokenAddress = _newTokenAddress;
     }
 
-    modifier onlyOwner() {
-        require(msg.sender == admin, "Only owner is allowed to perform this action");
-        _;
-    }
 }
