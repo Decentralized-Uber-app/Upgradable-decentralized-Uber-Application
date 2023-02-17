@@ -22,22 +22,15 @@ contract Uber is Initializable, AccessControlUpgradeable, Proxiable {
     address[] driverReviewers;
     address[] passengersAddress;
     address[] approvedDrivers;
-    address tokenAddress;
+    address public tokenAddress;
     uint public driveFeePerTime;
     uint public driveFeePerDistance;
 
     uint public rideCount;
 
 
-    // function constructor1(address _tokenAddress) public {
-    //     require(admin == address(0), "Already initalized");
-    //     admin = msg.sender;
-    //      tokenAddress = _tokenAddress;
-    // }
-
      function initialize(address _tokenAddress) public initializer {
         require(admin == address(0), "Already initalized");
-        admin = msg.sender;
         tokenAddress = _tokenAddress;
 
         __AccessControl_init();

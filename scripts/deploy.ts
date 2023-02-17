@@ -57,6 +57,10 @@ console.log("drivers", driversaddr)
  const getAdmin = await uberProxyInteract.callStatic.admin()
  console.log("admin ", getAdmin)
 
+ /******************* */
+ const getTokenADDr = await uberProxyInteract.callStatic.tokenAddress() ;
+ console.log("token addr ", getTokenADDr)
+
 
 
       
