@@ -1,67 +1,71 @@
 import { ethers } from "hardhat";
 
 async function main() {
-     const accounts = await ethers.getSigners()
-      const contractOwner = accounts[0]
-      const driver1 = accounts[1]
+  //    const accounts = await ethers.getSigners()
+  //     const contractOwner = accounts[0]
+  //     const driver1 = accounts[1]
 
-  //DEPLOYING THE UBER TOKEN CONTRACT
-  const UberTokencontract = await ethers.getContractFactory("UberToken");
-  const ubertoken = await UberTokencontract.deploy();
+  // //DEPLOYING THE UBER TOKEN CONTRACT
+  // const UberTokencontract = await ethers.getContractFactory("UberToken");
+  // const ubertoken = await UberTokencontract.deploy();
 
-  await ubertoken.deployed();
+  // await ubertoken.deployed();
 
-  console.log(`Uber token contract is deployed to ${ubertoken.address}`);
+  // console.log(`Uber token contract is deployed to ${ubertoken.address}`);
 
-  //DEPLOYING THE UBER CONTRACT
-  const Ubercontract = await ethers.getContractFactory("Uber");
-  const uber = await Ubercontract.deploy();
+  // //DEPLOYING THE UBER CONTRACT
+   const Ubercontract = await ethers.getContractFactory("Uber");
+  // const uber = await Ubercontract.deploy();
 
-  await uber.deployed();
+  // await uber.deployed();
 
-  console.log(`Uber Implemetation contract is deployed to ${uber.address}`);
+  // console.log(`Uber Implemetation contract is deployed to ${uber.address}`);
 
 
-  /************************* */
-  const UberInteract = Ubercontract.attach(uber.address)
-  const intialixe = await UberInteract.callStatic.encode(ubertoken.address)
-  console.log("initialize ", intialixe)
+  // /************************* */
+  // const UberInteract = Ubercontract.attach(uber.address)
+  // const intialixe = await UberInteract.callStatic.encode(ubertoken.address)
+  // console.log("initialize ", intialixe)
   
 
 
-   //DEPLOYING THE PROXY CONTRACT
-   const ProxyContract = await ethers.getContractFactory("Proxy");
-   const proxy = await ProxyContract.deploy(intialixe, uber.address);
+  //  //DEPLOYING THE PROXY CONTRACT
+  //  const ProxyContract = await ethers.getContractFactory("Proxy");
+  //  const proxy = await ProxyContract.deploy(intialixe, uber.address);
  
-   await proxy.deployed();
+  //  await proxy.deployed();
  
-   console.log(`UberProxy contract is deployed to ${proxy.address}`)
+  //  console.log(`Uber Proxy contract is deployed to ${proxy.address}`)
 
 
 /******************INteract wiith*/
-const uberProxyInteract =  Ubercontract.attach(proxy.address)
-const driverReg = await uberProxyInteract.connect(driver1).driversRegister("isaac",  5);
+const uberProxyInteract =  Ubercontract.attach("0x951fAa8B5E040DdC3f0489D00CF1E66be2355b25")
+// const driverReg = await uberProxyInteract.driversRegister("Sayrarh", 52901);
+// console.log("drivers reg ", driverReg)
 
 
-const driversaddr = await uberProxyInteract.callStatic.viewAllDrivers();
-console.log("drivers", driversaddr)
+// const driversaddr = await uberProxyInteract.callStatic.viewAllDrivers();
+// console.log("drivers", driversaddr)
 
-/*******************set ride fee */ //onlyadmin can do this
- await uberProxyInteract.setRideFeePerTime(20);
+// /*******************set ride fee */ //onlyadmin can do this
+// //  await uberProxyInteract.setRideFeePerTime(20);
 
- /***************get fee*****/
- const getFee = await uberProxyInteract.callStatic.driveFeePerTime()
- console.log("get fee", getFee)
+//  /***************get fee*****/
+//  const getFee = await uberProxyInteract.callStatic.driveFeePerTime()
+//  console.log("get fee", getFee)
 
- /**********Get admin********** */
- const getAdmin = await uberProxyInteract.callStatic.admin()
- console.log("admin ", getAdmin)
+// //  /**********Get admin********** */
+// //  const getAdmin = await uberProxyInteract.callStatic.admin()
+// //  console.log("admin ", getAdmin)
 
- /******************* */
- const getTokenADDr = await uberProxyInteract.callStatic.tokenAddress() ;
- console.log("token addr ", getTokenADDr)
+//  /******************* */
+//  const getTokenADDr = await uberProxyInteract.callStatic.tokenAddress() ;
+//  console.log("token addr ", getTokenADDr)
 
 
+
+ const getTokenADDr = await uberProxyInteract.passengerRegistration() ;
+console.log("token addr ", getTokenADDr)
 
       
     // // //Interaction with the contracts

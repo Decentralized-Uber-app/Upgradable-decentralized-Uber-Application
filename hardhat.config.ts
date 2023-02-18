@@ -7,6 +7,8 @@ import "@nomiclabs/hardhat-ethers";
 
 //contract address key
 const ACCOUNT_PRIVATE_KEY = process.env.ACCOUNT_PRIVATE_KEY;
+const ACCOUNT_PRIVATE_KEY2 = process.env.ACCOUNT_PRIVATE_KEY2;
+const ACCOUNT_PRIVATE_KEY4 = process.env.ACCOUNT_PRIVATE_KEY4;
 
 module.exports = {
   solidity: "0.8.17",
@@ -14,7 +16,7 @@ module.exports = {
     hyperspace: {
         chainId: 3141,
         url: "https://api.hyperspace.node.glif.io/rpc/v1",
-        accounts: [ACCOUNT_PRIVATE_KEY],
+        accounts: [ACCOUNT_PRIVATE_KEY4],
     },
 },
   // settings: {
