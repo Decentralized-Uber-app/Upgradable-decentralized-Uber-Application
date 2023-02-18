@@ -19,7 +19,7 @@ async function main() {
 
   await uber.deployed();
 
-  console.log(`Uber contract is deployed to ${uber.address}`);
+  console.log(`Uber Implemetation contract is deployed to ${uber.address}`);
 
 
   /************************* */
@@ -35,7 +35,7 @@ async function main() {
  
    await proxy.deployed();
  
-   console.log(`Uber contract is deployed to ${proxy.address}`)
+   console.log(`UberProxy contract is deployed to ${proxy.address}`)
 
 
 /******************INteract wiith*/

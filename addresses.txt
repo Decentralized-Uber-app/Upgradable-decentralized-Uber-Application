@@ -1,0 +1,4 @@
+Uber token contract is deployed to 0x3D98a2f7dFdAB3c09A28e95f5e49f26be87f7f95
+Uber Implemetation contract is deployed to 0x25d3195984A693886103312eA3FA53D738c951B7
+initialize  0xc4d66de80000000000000000000000003d98a2f7dfdab3c09a28e95f5e49f26be87f7f95
+Uber Proxy contract is deployed to 0x951fAa8B5E040DdC3f0489D00CF1E66be2355b25
